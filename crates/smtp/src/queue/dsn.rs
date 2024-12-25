@@ -250,6 +250,12 @@ impl Message {
         let has_failure = !txt_failed.is_empty();
 
         let mut txt = String::with_capacity(txt_len + 128);
+
+        // Vadim: We don't want to deal with the delayed messages in our company.
+        if has_delay && !has_success && !has_failure {
+            return None;
+        }
+
         let (subject, is_mixed) = if has_success && !has_delay && !has_failure {
             txt.push_str(
                 "Your message has been successfully delivered to the following recipients:\r\n\r\n",
